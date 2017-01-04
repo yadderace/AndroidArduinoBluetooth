@@ -23,7 +23,8 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
 
     Activity        activity;
     Button          btn_start,
-                    btn_stats;
+                    btn_stats,
+                    btn_exit;
     RelativeLayout  relativelayout_home;
 
     public static String DRIVER_ID_KEY = "DRIVER_ID_KEY";
@@ -38,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
 
         btn_start = (Button) findViewById(R.id.btn_start);
         btn_stats = (Button) findViewById(R.id.btn_stats);
+        btn_exit = (Button) findViewById(R.id.btn_exit);
 
         relativelayout_home = (RelativeLayout) findViewById(R.id.relativelayout_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,6 +68,12 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
             public void onClick(View v) {
                 Intent intent = new Intent(activity, StaticsActivity.class);
                 startActivity(intent);
+            }
+        });
+        btn_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.finish();
             }
         });
 
