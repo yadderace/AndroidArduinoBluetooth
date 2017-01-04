@@ -1,11 +1,13 @@
 package com.example.yadder.arqui2car.Activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -27,6 +29,7 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
     Activity        activity;
     Button          btn_start,
                     btn_stats,
+                    btn_credits,
                     btn_exit;
     FloatingActionButton    floatingbutton_new_driver;
     RelativeLayout  relativelayout_home;
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
 
         btn_start = (Button) findViewById(R.id.btn_start);
         btn_stats = (Button) findViewById(R.id.btn_stats);
+        btn_credits = (Button) findViewById(R.id.btn_credits);
         btn_exit = (Button) findViewById(R.id.btn_exit);
         floatingbutton_new_driver = (FloatingActionButton) findViewById(R.id.floatingbutton_new_driver);
 
@@ -77,6 +81,17 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
             @Override
             public void onClick(View v) {
                 activity.finish();
+            }
+        });
+        btn_credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(activity)
+                        .setTitle("Créditos")
+                        .setMessage("Arquitectura 2 USAC \ngithub.com/yadderace/AndroidArduinoBluetooth")
+                        .setPositiveButton("Regresar", null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
     }
