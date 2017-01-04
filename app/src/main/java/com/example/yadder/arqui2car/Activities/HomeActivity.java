@@ -14,17 +14,21 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.example.yadder.arqui2car.Dialogs.CreateDriverDialog;
 import com.example.yadder.arqui2car.Dialogs.SelectDriverDialog;
+import com.example.yadder.arqui2car.Interfaces.CreateDriverDialogListener;
 import com.example.yadder.arqui2car.Interfaces.SelectDriverDialogListener;
+import com.example.yadder.arqui2car.Models.Driver;
 import com.example.yadder.arqui2car.R;
 import com.example.yadder.arqui2car.Utilities.RealmOperations;
 
-public class HomeActivity extends AppCompatActivity implements SelectDriverDialogListener{
+public class HomeActivity extends AppCompatActivity implements SelectDriverDialogListener, CreateDriverDialogListener{
 
     Activity        activity;
     Button          btn_start,
                     btn_stats,
                     btn_exit;
+    FloatingActionButton    floatingbutton_new_driver;
     RelativeLayout  relativelayout_home;
 
     public static String DRIVER_ID_KEY = "DRIVER_ID_KEY";
@@ -40,6 +44,7 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
         btn_start = (Button) findViewById(R.id.btn_start);
         btn_stats = (Button) findViewById(R.id.btn_stats);
         btn_exit = (Button) findViewById(R.id.btn_exit);
+        floatingbutton_new_driver = (FloatingActionButton) findViewById(R.id.floatingbutton_new_driver);
 
         relativelayout_home = (RelativeLayout) findViewById(R.id.relativelayout_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,12 +53,10 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
         RealmOperations.context = getApplicationContext();
         RealmOperations.createDummyData();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        floatingbutton_new_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(relativelayout_home, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showCreateDriverDialog();
             }
         });
 
@@ -76,13 +79,16 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
                 activity.finish();
             }
         });
-
-
     }
 
     private void showSelectDriverDialog(){
         DialogFragment newFragment = new SelectDriverDialog();
         newFragment.show(getSupportFragmentManager(), "SELECT_DRIVER_DIALOG");
+    }
+
+    private void showCreateDriverDialog(){
+        DialogFragment newFragment = new CreateDriverDialog();
+        newFragment.show(getSupportFragmentManager(), "CREATE_DRIVER_DIALOG");
     }
 
     private void showStartExcersiceActivity(String driverId, int week){
@@ -101,6 +107,18 @@ public class HomeActivity extends AppCompatActivity implements SelectDriverDialo
             return;
         }else{
             showStartExcersiceActivity(driverId, week);
+        }
+    }
+
+    @Override
+    public void onFinishCreateDriverDialog(Driver newDriver) {
+        if(!RealmOperations.existsDriver(newDriver.getDriverId())){
+            RealmOperations.saveDriver(newDriver);
+            Snackbar.make(relativelayout_home, "Nuevo conductor guardado", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else{
+            Snackbar.make(relativelayout_home, "El id del conductor ya esta guardado", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
     }
 }

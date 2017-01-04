@@ -13,6 +13,7 @@
 
     <!--Textview -->
     <string name="textview_driver_code">Código de conductor</string>
+    <string name="textview_driver_full_name">Nombre completo</string>
     <string name="textview_week_number">Semana</string>
     <string name="textview_driver_name">Nombre</string>
     <string name="textview_driver_age">Edad</string>
@@ -21,4 +22,5 @@
 
     <!--Dialog Titles -->
     <string name="title_select_driver">Datos de conductor</string>
+    <string name="title_create_driver">Nuevo Conductor</string>
 </resources>

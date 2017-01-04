@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.yadder.arqui2car.Models.Driver;
 import com.example.yadder.arqui2car.Models.Excercise;
+import com.example.yadder.arqui2car.Models.Sequence;
 import com.example.yadder.arqui2car.Models.Static;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
@@ -22,6 +24,7 @@ public class RealmOperations {
 
     private static Realm realm;
     public static Context context;
+    private static String DRIVER_SEQUENCE = "DRIVER_SEQUENCE";
 
     /**
      * Create dummy data for the app
@@ -105,6 +108,12 @@ public class RealmOperations {
         excercise.setDriverId("DRV-0003");
         excercise.setWeek(3);
         saveExcercise(excercise);
+
+        Sequence sequence = new Sequence();
+        sequence.setName(DRIVER_SEQUENCE);
+        sequence.setCurrent(4);
+        sequence.setPrefix("DRV");
+        saveSequence(sequence);
 
     }
 
@@ -237,5 +246,55 @@ public class RealmOperations {
         return false;
     }
 
+    /**
+     * Generate the next driver id and return it
+     * @return
+     */
+    public static String getNextDriverId(){
+        String result = null;
+        if(context != null){
+            Realm.init(context);
+            realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            Sequence realmSequence = realm.where(Sequence.class)
+                    .equalTo("name", DRIVER_SEQUENCE)
+                    .findFirst();
+            result = realmSequence.getPrefix() + "-" + String.format("%04d", realmSequence.getCurrent());
+            realmSequence.setCurrent(realmSequence.getCurrent() + 1);
+            realm.commitTransaction();
+            realm.close();
+        }
+        return  result;
+    }
 
+    /**
+     * Verify that sequence exist, return true if exist
+     * @param sequenceName
+     * @return
+     */
+    private static boolean existsSequence(String sequenceName){
+        if(context != null){
+            Realm.init(context);
+            realm = Realm.getDefaultInstance();
+            Sequence realmSequence = realm.where(Sequence.class)
+                    .equalTo("name", sequenceName)
+                    .findFirst();
+            boolean result = (realmSequence != null);
+            realm.close();
+            return result;
+        }
+        return false;
+    }
+
+
+    public static void saveSequence(Sequence sequence){
+        if(context != null && !existsSequence(sequence.getName())) {
+            Realm.init(context);
+            realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            realm.copyToRealm(sequence);
+            realm.commitTransaction();
+            realm.close();
+        }
+    }
 }
