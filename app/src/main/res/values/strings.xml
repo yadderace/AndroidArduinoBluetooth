@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Arqui2Car</string>
+    <string name="option_pair">Emparejar</string>
+
+    <!--Buttons Strings -->
+    <string name="btn_start">Iniciar</string>
+    <string name="btn_stats">Estadísticas</string>
+    <string name="btn_credits">Créditos</string>
+    <string name="btn_exit">Salir</string>
+    <string name="btn_confirm">Confirmar</string>
+    <string name="btn_find">Buscar</string>
+    <string name="btn_stop">Detener</string>
+
+    <!--Textview -->
+    <string name="textview_driver_code">Código de conductor</string>
+    <string name="textview_week_number">Semana</string>
+    <string name="textview_driver_name">Nombre</string>
+    <string name="textview_driver_age">Edad</string>
+    <string name="textview_total_shocks">Total</string>
+    <string name="textview_none_paired">No emparejaada</string>
+
+    <!--Dialog Titles -->
+    <string name="title_select_driver">Datos de conductor</string>
+</resources>
